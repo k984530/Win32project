@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.TEST = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // TEST
@@ -40,16 +40,9 @@
             this.TEST.Name = "TEST";
             this.TEST.Size = new System.Drawing.Size(254, 82);
             this.TEST.TabIndex = 4;
-            this.TEST.Text = "로그인 버튼 클릭";
+            this.TEST.Text = "크롤링 시작\r\n";
             this.TEST.UseVisualStyleBackColor = true;
             this.TEST.Click += new System.EventHandler(this.buttonLogin_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(85, 32);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 28);
-            this.textBox1.TabIndex = 5;
             // 
             // textBox2
             // 
@@ -57,6 +50,13 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 28);
             this.textBox2.TabIndex = 6;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(85, 32);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 28);
+            this.textBox1.TabIndex = 5;
             // 
             // Form1
             // 
@@ -66,7 +66,7 @@
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.TEST);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -78,8 +78,8 @@
         #endregion
 
         private System.Windows.Forms.Button TEST;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
