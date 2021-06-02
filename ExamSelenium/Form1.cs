@@ -57,45 +57,83 @@ namespace ExamSelenium
                 _driver.Navigate().GoToUrl("https://open.yonsei.ac.kr/passni/sso/coursemosLogin.php?username="+id+"&password="+pw+"&ssoGubun=Login");
                 
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+
                 var box = _driver.FindElement(By.ClassName("front-box"));
-                Trace.WriteLine(box.Text);
+
+//                Trace.WriteLine(box.Text);
+
                 var list = box.FindElements(By.ClassName("course-name"));
 
-
-                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+//                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
                 int k = 1;
+
                 int l = 1;
+
                 foreach (var d in list)
+
                 {
+
                     k = l;
+
                     foreach (var c in list)
+
                     {
+
                         int i = 1;
+
                         int j = 1;
+
                         k--;
+
                         if (k == 0)
+
                         {
-                            c.Click();
+                            Trace.WriteLine(c.Text);
+
                             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-                            var course_box = _driver.FindElements(By.ClassName("course-box"));
-                            var HW = course_box[1].FindElements(By.ClassName("instancename"));
+
+                            c.Click();
+
+                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+                            var course_box = _driver.FindElement(By.ClassName("total-sections"));
+
+                            var HW = course_box.FindElements(By.ClassName("instancename"));
+
                             foreach (var b in HW)
+
                             {
+
                                 i = j; // 들어있는 리스트 중에 j번째로 있는 과제 페이지 접근
+
                                 foreach (var a in HW)
+
                                 {
-                                    Trace.WriteLine(a.Text);
-                                    if (a.Text.Contains("과제"))
+
+                                    //                                   Trace.WriteLine(a.Text);
+
+                                    if (a.Text.Contains("과제") & !a.Text.Contains("Ch"))
                                     {
                                         i--;
                                         if (i == 0)
                                         {
+                                            Trace.WriteLine(a.Text);
+                                           
                                             a.Click();
-                                            Trace.WriteLine("성공");
-                                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+                                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+                                            var HWtable = _driver.FindElement(By.ClassName("generaltable"));
+                                            var tbody = HWtable.FindElement(By.TagName("tbody"));
+                                            var HWresult = tbody.FindElements(By.TagName("tr"));
+                                            Trace.WriteLine(HWresult[0].Text);
+                                            Trace.WriteLine(HWresult[1].Text);
+                                            Trace.WriteLine(HWresult[2].Text);
+                                            Trace.WriteLine(HWresult[3].Text);
+
                                             j++;
                                             _driver.Navigate().Back(); // 페이지 뒤로가기
+                                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                                             HW = _driver.FindElements(By.ClassName("instancename"));
                                             break;
                                         }
@@ -115,7 +153,6 @@ namespace ExamSelenium
                 Trace.WriteLine(exc.Message);
             }
         }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             _driver.Quit();
