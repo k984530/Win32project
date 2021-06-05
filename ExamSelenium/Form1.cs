@@ -47,7 +47,9 @@ namespace ExamSelenium
                 string id = textBox1.Text;
 
                 string pw = textBox2.Text;
-                
+
+                List<string> inf = new List<string>();
+
                 _driver = new ChromeDriver(_driverService, _options);
 
                 id = "2017253020";
@@ -56,28 +58,34 @@ namespace ExamSelenium
 
                 _driver.Navigate().GoToUrl("https://open.yonsei.ac.kr/passni/sso/coursemosLogin.php?username="+id+"&password="+pw+"&ssoGubun=Login");
                 
-                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                
+                var notice = _driver.FindElements(By.ClassName("close"));
+
+                notice[0].Click();
+ 
+                notice[1].Click();
+                
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
                 var box = _driver.FindElement(By.ClassName("front-box"));
 
 //                Trace.WriteLine(box.Text);
 
-                var list = box.FindElements(By.ClassName("course-name"));
+                var list = box.FindElements(By.ClassName("course-box"));
 
 //                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
                 int k = 1;
 
                 int l = 1;
-
-                foreach (var d in list)
-
+                
+                foreach (var d in list) // list -> 과목들
                 {
 
                     k = l;
-
+                    
                     foreach (var c in list)
-
                     {
 
                         int i = 1;
@@ -90,8 +98,10 @@ namespace ExamSelenium
 
                         {
                             Trace.WriteLine(c.Text);
-
-                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+                         
+                            inf.Add("과목 "+c.Text);
+                            
+                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
                             c.Click();
 
@@ -111,7 +121,7 @@ namespace ExamSelenium
 
                                 {
 
-                                    //                                   Trace.WriteLine(a.Text);
+                                    //  Trace.WriteLine(a.Text);
 
                                     if (a.Text.Contains("과제") & !a.Text.Contains("Ch"))
                                     {
@@ -119,7 +129,8 @@ namespace ExamSelenium
                                         if (i == 0)
                                         {
                                             Trace.WriteLine(a.Text);
-                                           
+                                            inf.Add("과제 "+a.Text);
+                                            
                                             a.Click();
                                             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
@@ -131,6 +142,11 @@ namespace ExamSelenium
                                             Trace.WriteLine(HWresult[2].Text);
                                             Trace.WriteLine(HWresult[3].Text);
 
+                                            inf.Add("내용 "+HWresult[0].Text);
+                                            inf.Add("내용 " + HWresult[1].Text);
+                                            inf.Add("내용 " + HWresult[2].Text);
+                                            inf.Add("내용 " + HWresult[3].Text);
+
                                             j++;
                                             _driver.Navigate().Back(); // 페이지 뒤로가기
                                             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -141,17 +157,33 @@ namespace ExamSelenium
                                 }
                             }
                             _driver.Navigate().GoToUrl("https://open.yonsei.ac.kr/passni/sso/coursemosLogin.php?username=" + id + "&password=" + pw + "&ssoGubun=Login");
-                            list = _driver.FindElements(By.ClassName("course-name"));
+
+                            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+
+                            notice = _driver.FindElements(By.ClassName("close"));
+
+                            notice[0].Click();
+                            
+                            notice[1].Click();
+                            
+                            list = _driver.FindElements(By.ClassName("course-box"));
+                            
                             l++;
+                            
                             break;
                         }
                     }
+                }
+                Trace.WriteLine("여기부터 시작");
+                foreach (var a in inf) {
+                    Trace.WriteLine(a);
                 }
             }
             catch (Exception exc)
             {
                 Trace.WriteLine(exc.Message);
             }
+
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
